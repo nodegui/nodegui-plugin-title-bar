@@ -38,7 +38,7 @@ win.setStyleSheet(`
     flex: 1;
     height: '100%';
     align-items: 'center';
-    justify-content: 'space-around';
+    justify-content: 'center';
   }
 `)
 win.setWindowTitle('NodeGUI Demo')

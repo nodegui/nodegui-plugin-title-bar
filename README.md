@@ -3,9 +3,9 @@
 Hide macOS title bar and leave only traffic lights.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseDefault.png" width="190" height="179">
-<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseHidden.png" width="190" height="179">
-<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseHiddenInset.png" width="190" height="179">
+<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseDefault.png" width="250" height="193">
+<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseHidden.png" width="250" height="193">
+<img src="https://raw.githubusercontent.com/dimitarnestorov/nodegui-plugin-title-bar/master/assets/showcaseHiddenInset.png" width="250" height="193">
 </p>
 
 ```javascript
