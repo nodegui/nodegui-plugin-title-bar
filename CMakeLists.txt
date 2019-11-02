@@ -13,9 +13,21 @@ set(PLUGIN_ADDON_NAME "nodegui_plugin_title_bar")
 
 project(${PLUGIN_ADDON_NAME})
 
+
+set(OS_SPECIFIC_SRC "")
+if(APPLE)
+    set(OS_SPECIFIC_SRC
+        "${PROJECT_SOURCE_DIR}/src/main.mm"
+    )
+else()
+    set(OS_SPECIFIC_SRC
+        "${PROJECT_SOURCE_DIR}/src/main.cpp"
+    )
+endif()
+
 add_library(${PLUGIN_ADDON_NAME} SHARED
     "${CMAKE_JS_SRC}"
-    "${PROJECT_SOURCE_DIR}/src/main.mm"
+    "${OS_SPECIFIC_SRC}"
 )
 
 AddPluginConfig(${PLUGIN_ADDON_NAME})
