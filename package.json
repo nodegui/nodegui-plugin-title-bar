@@ -1,0 +1,30 @@
+{
+	"name": "@nodegui/plugin-title-bar",
+	"version": "0.0.1",
+	"description": "A native plugin for NodeGUI for managing macOS's title bar",
+	"main": "dist/index.js",
+	"typings": "dist/index.d.ts",
+	"scripts": {
+		"prepublishOnly": "rimraf dist && npm run build",
+		"build": "tsc && npm run build:addon",
+		"build:addon": "cross-env CMAKE_BUILD_PARALLEL_LEVEL=8 cmake-js compile",
+		"dev": "npm run build && qode dist/demo.js"
+	},
+	"author": "Dimitar Nestorov <opensource@dimitarnestorov.com> (https://dimitarnestorov.com)",
+	"license": "MIT",
+	"peerDependencies": {
+		"@nodegui/nodegui": "*"
+	},
+	"dependencies": {
+		"cmake-js": "^6.0.0",
+		"cross-env": "^6.0.3",
+		"node-addon-api": "^1.7.1"
+	},
+	"devDependencies": {
+		"@nodegui/nodegui": "^0.3.1",
+		"@nodegui/qode": "^1.0.5",
+		"@types/node": "^12.12.5",
+		"rimraf": "^3.0.0",
+		"typescript": "^3.6.4"
+	}
+}
