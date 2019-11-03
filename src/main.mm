@@ -3,12 +3,56 @@
 #include <napi.h>
 #include <nodegui/QtWidgets/QMainWindow/qmainwindow_wrap.h>
 
-QObject *qObject = new QObject();
+@interface TBWindowDelegate : NSObject <NSWindowDelegate>
 
-bool isInFullScreenMode (NSWindow *window)
+@property (strong, nonatomic) NSObject <NSWindowDelegate> *delegate;
+
+- (instancetype)initWithOtherDelegate:(NSObject <NSWindowDelegate> *)delegate;
+
+@end
+
+@implementation TBWindowDelegate
+
+- (instancetype)initWithOtherDelegate:(NSObject <NSWindowDelegate> *)delegate
 {
-	return (([window styleMask] & NSFullScreenWindowMask) == NSFullScreenWindowMask);
+	self = [super init];
+    if (self) {
+        _delegate = delegate;
+    }
+    return self;
 }
+
+
+- (NSApplicationPresentationOptions)window:(NSWindow *)window
+      willUseFullScreenPresentationOptions:(NSApplicationPresentationOptions)proposedOptions
+{
+	return (NSApplicationPresentationAutoHideToolbar | NSApplicationPresentationFullScreen | NSApplicationPresentationAutoHideMenuBar);
+}
+
+// https://github.com/qt/qtbase/blob/dev/src/plugins/platforms/cocoa/qnswindowdelegate.mm
+- (BOOL)windowShouldClose:(NSWindow *)window
+{
+	return [_delegate windowShouldClose:window];
+}
+
+- (NSRect)windowWillUseStandardFrame:(NSWindow *)window defaultFrame:(NSRect)proposedFrame
+{
+    return [_delegate windowWillUseStandardFrame:window defaultFrame:proposedFrame];
+}
+
+- (BOOL)window:(NSWindow *)window shouldPopUpDocumentPathMenu:(NSMenu *)menu
+{
+    return [_delegate window:window shouldPopUpDocumentPathMenu:menu];
+}
+
+- (BOOL)window:(NSWindow *)window shouldDragDocumentWithEvent:(NSEvent *)event from:(NSPoint)dragImageLocation withPasteboard:(NSPasteboard *)pasteboard
+{
+	return [_delegate window:window shouldDragDocumentWithEvent:event from:dragImageLocation withPasteboard:pasteboard];
+}
+// #endregion
+@end
+
+QObject *qObject = new QObject();
 
 Napi::Value SetTitleBarStyle(const Napi::CallbackInfo &info)
 {
@@ -31,17 +75,6 @@ Napi::Value SetTitleBarStyle(const Napi::CallbackInfo &info)
 	// Whenever full screen mode is exited Qt applies a new styleMask
 	auto functor = [=] ()
 	{
-		if (style.compare("hiddenInset") == 0)
-		{
-			if (isInFullScreenMode(window))
-			{
-				[window setToolbar:NULL];
-			}
-			else
-			{
-				[window setToolbar:toolbar];
-			}
-		}
 		window.styleMask |= NSWindowStyleMaskFullSizeContentView;
 	};
 
@@ -49,6 +82,10 @@ Napi::Value SetTitleBarStyle(const Napi::CallbackInfo &info)
 	{
 		[window setTitlebarAppearsTransparent:YES];
 		window.titleVisibility = NSWindowTitleHidden;
+		if ([window.delegate isKindOfClass:[TBWindowDelegate class]])
+		{
+			window.delegate = ((TBWindowDelegate *) window.delegate).delegate;
+		}
 		[window setToolbar:NULL];
 		window.styleMask |= NSWindowStyleMaskFullSizeContentView;
 		QObject::disconnect(windowHandle, &QWindow::windowStateChanged, qObject, NULL);
@@ -58,6 +95,10 @@ Napi::Value SetTitleBarStyle(const Napi::CallbackInfo &info)
 	{
 		[window setTitlebarAppearsTransparent:YES];
 		window.titleVisibility = NSWindowTitleHidden;
+		if (![window.delegate isKindOfClass:[TBWindowDelegate class]])
+		{
+			window.delegate = [[TBWindowDelegate alloc] initWithOtherDelegate:window.delegate];
+		}
 		[window setToolbar:toolbar];
 		window.styleMask |= NSWindowStyleMaskFullSizeContentView;
 		QObject::disconnect(windowHandle, &QWindow::windowStateChanged, qObject, NULL);
@@ -67,6 +108,10 @@ Napi::Value SetTitleBarStyle(const Napi::CallbackInfo &info)
 	{
 		[window setTitlebarAppearsTransparent:NO];
 		window.titleVisibility = NSWindowTitleVisible;
+		if ([window.delegate isKindOfClass:[TBWindowDelegate class]])
+		{
+			window.delegate = ((TBWindowDelegate *) window.delegate).delegate;
+		}
 		[window setToolbar:NULL];
 		window.styleMask ^= NSWindowStyleMaskFullSizeContentView;
 		QObject::disconnect(windowHandle, &QWindow::windowStateChanged, qObject, NULL);
