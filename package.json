@@ -1,11 +1,12 @@
 {
-	"name": "@nodegui/plugin-title-bar",
+	"name": "nodegui-plugin-title-bar",
 	"version": "0.0.1",
-	"description": "A native plugin for NodeGUI for managing macOS's title bar",
+	"description": "Hide macOS title bar and leave only traffic lights",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
 	"scripts": {
 		"prepublishOnly": "rimraf dist && npm run build",
+		"postinstall": "npm run build:addon",
 		"build": "tsc && npm run build:addon",
 		"build:addon": "cross-env CMAKE_BUILD_PARALLEL_LEVEL=8 cmake-js compile",
 		"dev": "npm run build && qode dist/demo.js"

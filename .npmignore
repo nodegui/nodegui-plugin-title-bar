@@ -1,0 +1,10 @@
+.vscode/
+assets/
+build/
+dist/demo*
+src/*.ts
+tsconfig.json
+.prettierignore
+.prettierrc
+.DS_Store
+.gitattributes

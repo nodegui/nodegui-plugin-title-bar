@@ -1,4 +1,4 @@
-# @nodegui/plugin-title-bar
+# nodegui-plugin-title-bar
 
 Hide macOS title bar and leave only traffic lights.
 
@@ -10,7 +10,7 @@ Hide macOS title bar and leave only traffic lights.
 
 ```javascript
 import { QMainWindow } from '@nodegui/nodegui'
-import { setTitleBarStyle } from '@nodegui/plugin-title-bar'
+import { setTitleBarStyle } from 'nodegui-plugin-title-bar'
 
 const window = new QMainWindow()
 window.show()
