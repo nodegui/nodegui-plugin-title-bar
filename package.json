@@ -1,9 +1,11 @@
 {
-	"name": "nodegui-plugin-title-bar",
+	"name": "@nodegui/plugin-title-bar",
 	"version": "0.0.1",
-	"description": "Hide macOS title bar and leave only traffic lights",
+	"description": "Plugin for NodeGUI to hide macOS title bar and leave only traffic lights.",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
+	"repository": "git@github.com/nodegui/nodegui-plugin-title-bar.git",
+	"homepage": "https://github.com/nodegui/nodegui-plugin-title-bar",
 	"scripts": {
 		"prepublishOnly": "rimraf dist && npm run build",
 		"postinstall": "npm run build:addon",
