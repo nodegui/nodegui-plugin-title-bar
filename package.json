@@ -24,7 +24,7 @@
 		"node-addon-api": "^2.0.0"
 	},
 	"devDependencies": {
-		"@nodegui/nodegui": "^0.15.5",
+		"@nodegui/nodegui": "^0.24.0",
 		"@types/node": "^12.12.5",
 		"rimraf": "^3.0.0",
 		"typescript": "^3.6.4"
